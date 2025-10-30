@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Queue & countdown - Settings</ion-title>
+
+    <img src="assets/icon/home-icon.svg" style="height: 4vh; position: absolute; right: 1rem; top: 0.5rem; cursor: pointer;" routerLink="/home"/>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <div style="width: 50%; float: left;">
+    <fieldset id="new-team-fieldset">
+      <legend>New team</legend>
+      <form>
+        <ion-item>
+          <ion-input [(ngModel)]="newTeam.name" name="name" placeholder="Name of team"></ion-input>
+        </ion-item>
+        <br>
+        <ion-item>
+          <ion-label>Country</ion-label>
+          <ion-select [(ngModel)]="newTeam.countryCode" name="countryCode" interface="popover">
+            @for (country of countries; track $index) {
+              <ion-select-option [value]="country.code">
+                  {{ country.name }}
+              </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        <img src="assets/icon/save-icon.svg" alt="save" (click)="addTeam()"/>
+
+      </form>
+    </fieldset>
+
+    <fieldset id="timer-settings-fieldset">
+      <legend>Timer settings</legend>
+      <form>
+        <ion-item>
+          <ion-label>Seconds:</ion-label>
+          <ion-input [(ngModel)]="seconds" name="seconds" placeholder="Seconds"></ion-input>
+        </ion-item>
+
+        <img src="assets/icon/save-icon.svg" alt="save" (click)="updateTimerSettings()"/>
+
+      </form>
+    </fieldset>
+  </div>
+
+  <div style="width: 50%; float: left;">
+    <fieldset id="team-fieldset">
+      <legend>Teams</legend>
+      @for (team of teams; track $index) {
+        <div class="team-entry">
+          <img src="assets/icon/delete-icon.png" alt="delete" (click)="removeTeam(team)"/>
+          <img src="assets/flags/svg/{{ team.countryCode }}.svg" alt="{{ team.countryName }}"/>
+          <div class="team-info">
+            {{ team.name }}
+            <br>
+            {{ team.countryName }}
+          </div>
+        </div>
+      }
+    </fieldset>
+  </div>
+
+</ion-content>

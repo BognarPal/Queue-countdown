@@ -1,0 +1,81 @@
+#new-team-fieldset {
+  font-size: 3rem;
+
+  ion-input {
+    font-size: 2rem;
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  ion-select {
+    width: 100%;
+    font-size: 2rem;
+    margin: 1rem 0;
+  }
+
+  ion-label {
+    margin: 1rem 0;
+    font-size: 2rem;
+  }
+
+  img[alt="save"] {
+    cursor: pointer;
+    height: 4rem;
+    margin-top: 2rem
+  }
+}
+#timer-settings-fieldset {
+  font-size: 3rem;
+  margin-top: 4rem;
+
+  img[alt="save"] {
+    cursor: pointer;
+    height: 4rem;
+    margin-top: 2rem
+  }
+
+  ion-label {
+    margin-right: 1rem;
+  }
+
+  ion-item {
+    margin: 1rem auto;
+    font-size: 2rem;
+    width: 16rem;
+  }
+}
+
+
+#team-fieldset {
+  font-size: 3rem;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  div.team-entry {
+    clear: both;
+    margin-bottom: 1rem;
+    height: 7rem;
+
+    img {
+      height: 6rem;
+      border: 1px solid #888;
+      float: left;
+    }
+
+    img[alt="delete"] {
+      border: none;
+      height: 3rem;
+      margin: 1rem 1.5rem 1rem 0;
+      cursor: pointer;
+    }
+
+    div.team-info {
+      font-size: 2rem;
+    }
+
+    br {
+      margin-bottom: 0.5rem;
+    }
+
+  }
+}

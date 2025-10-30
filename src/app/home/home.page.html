@@ -1,20 +1,49 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title class="ion-text-center">Queue & countdown</ion-title>
+    <img src="assets/icon/settings-icon.svg" style="height: 4vh; position: absolute; right: 1rem; top: 0.5rem; cursor: pointer;" routerLink="/home/settings"/>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+<ion-content class="ion-padding ion-text-center">
+  <div style="width: 60%; float: left;">
+    <h1 [style.color]="seconds <= 30 ? 'red' : 'black'" style="font-size: 35vh;">
+      @if (seconds > 0) {
+        <div style="height: 40vh; margin: 0;">
+          {{ secondsToScreen }}
+        </div>
+      }
+      @else {
+        <div style="font-size: 10vh; margin-bottom: 15vh; margin-top: 15vh;">Time's up!</div>
+      }
+    </h1>
+      <div style="font-size: 2rem; text-align: left;">To line up</div>
+      <div id="to-line-up-flags">
+        @for (team of teamsNotInQueue; track $index) {
+            <img src="assets/flags/svg/{{ team.countryCode }}.svg" alt="{{ team.countryName }}" (click)="enQueueTeam(team)"/>
+        }
+    </div>
   </div>
+  <div style="width: 40%; float: right;">
+    <fieldset id="current-team-fieldset">
+      <legend>Current team</legend>
+      @if (currentTeam) {
+        <img src="assets/flags/svg/{{ currentTeam.countryCode }}.svg" alt="{{ currentTeam.countryName }}" (click)="nextTeam()"/>
+      }
+      @else {
+        <ion-button id="start-button" (click)="start()">Start</ion-button>
+      }
+    </fieldset>
+    <fieldset id="queue-fieldset">
+      <legend>Queue</legend>
+      <ol>
+        @for (team of teamsInQueue; track $index) {
+          <li>
+            <img src="assets/flags/svg/{{ team.countryCode }}.svg" alt="{{ team.countryName }}" (click)="deQueueTeam(team)"/>
+          </li>
+        }
+      </ol>
+    </fieldset>
+  </div>
+
 </ion-content>
