@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { CommService } from 'src/app/comm';
 import { TeamModel } from 'src/app/models/team.model';
 
 @Component({
@@ -14,16 +15,15 @@ export class SettingsPage implements OnInit {
   teams: TeamModel[] = [];
   countries: {code: string, name: string}[] = [];
   newTeam: TeamModel = { countryCode: '', countryName: '', name: '' };
-  seconds = 180;
+  seconds: number = 180;
 
   constructor(
     private storage: Storage,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private commService: CommService) { }
 
   async ngOnInit() {
     await this.storage.create();
-    this.teams = await this.storage.get('teams') || [];
-    this.seconds = await this.storage.get('seconds') || 180;
 
     this.http.get<{code: string, name: string}[]>('assets/flags/countries.json').subscribe({
       next: (data) => {
@@ -35,11 +35,14 @@ export class SettingsPage implements OnInit {
       },
       error: (err) => console.error('Hiba a JSON beolvasásakor:', err),
     });
+    this.teams = await this.storage.get('teams') || [];
+    this.seconds = await this.storage.get('seconds') || 180;
   }
 
   removeTeam(team: TeamModel) {
     this.teams = this.teams.filter(t => t !== team);
     this.storage.set('teams', this.teams);
+    this.commService.refresh.emit(this.teams);
   }
 
   addTeam() {
@@ -49,10 +52,13 @@ export class SettingsPage implements OnInit {
       this.teams.push({ ...this.newTeam });
       this.storage.set('teams', this.teams);
       this.newTeam = { countryCode: '', countryName: '', name: '' };
+      this.commService.refresh.emit(this.teams);
     }
   }
 
   updateTimerSettings() {
+    this.commService.secondsOfRound = this.seconds;
     this.storage.set('seconds', this.seconds);
+    this.commService.refresh.emit(this.teams);
   }
 }

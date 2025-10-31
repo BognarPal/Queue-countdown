@@ -36,7 +36,7 @@
       <form>
         <ion-item>
           <ion-label>Seconds:</ion-label>
-          <ion-input [(ngModel)]="seconds" name="seconds" placeholder="Seconds"></ion-input>
+          <ion-input type="number" inputmode="numeric" [(ngModel)]="seconds" name="seconds" placeholder="Seconds"></ion-input>
         </ion-item>
 
         <img src="assets/icon/save-icon.svg" alt="save" (click)="updateTimerSettings()"/>

@@ -70,4 +70,19 @@ testem.log
 Thumbs.db
 
 # android build files
-/android
+/android/.gradle
+/android/app/build
+/android/build
+/android/.cxx
+/android/.externalNativeBuild
+/android/local.properties
+/android/.idea
+/android/captures
+/android/.flutter-plugins-dependencies
+/android/.flutter-plugins
+/android/.packages
+/android/.dart_tool
+/android/.fvm
+/android/.metadata
+/android/.iml
+/android/.idea_modules

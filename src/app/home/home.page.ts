@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { TeamModel } from '../models/team.model';
+import { CommService } from '../comm';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { TeamModel } from '../models/team.model';
 export class HomePage {
 
   seconds = 180;
-  secondsOfRound = 180;
+
   running = false;
   private timer: any;
 
@@ -25,14 +26,24 @@ export class HomePage {
     // { countryCode: 'de', countryName: 'Germany', name: 'Team Germany' }
   ]
 
-  constructor(private storage: Storage) { }
+  constructor(
+    private storage: Storage,
+    private commService: CommService) {}
 
   async ngOnInit() {
     await this.storage.create();
     //  await this.storage.set('teams', this.teams);
+    await this.loadSettings();
+    this.commService.refresh.subscribe((teams) => {
+      this.teams = teams;
+      this.stop();
+    });
+  }
+
+  async loadSettings() {
     this.teams = await this.storage.get('teams') || [];
-    this.secondsOfRound = await this.storage.get('seconds') || 180;
-    this.seconds = this.secondsOfRound;
+    this.commService.secondsOfRound = await this.storage.get('seconds') || 180;
+    this.seconds = this.commService.secondsOfRound;
   }
 
   enQueueTeam(team: TeamModel) {
@@ -52,7 +63,7 @@ export class HomePage {
     var team = this.teamsInQueue[0];
     this.recount(team);
     team.state = 'current';
-    this.seconds = this.secondsOfRound;
+    this.seconds = this.commService.secondsOfRound;
     this.running = true;
     this.timer = setInterval(() => {
       if (this.seconds > 0) {
@@ -68,7 +79,7 @@ export class HomePage {
     if (!team) return;
     team.state = undefined;
     this.stop();
-    this.seconds = this.secondsOfRound;
+    this.seconds = this.commService.secondsOfRound;
     this.start();
   }
 
@@ -85,6 +96,7 @@ export class HomePage {
 
   stop() {
     this.running = false;
+    this.seconds = this.commService.secondsOfRound;
     clearInterval(this.timer);
   }
 
