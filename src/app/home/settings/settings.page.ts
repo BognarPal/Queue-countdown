@@ -28,9 +28,13 @@ export class SettingsPage implements OnInit {
     this.http.get<{code: string, name: string}[]>('assets/flags/countries.json').subscribe({
       next: (data) => {
         this.countries = data.sort((a, b) => {
-          const aNum = parseInt(a.name);
-          const bNum = parseInt(b.name);
-          return aNum - bNum;
+          if ( a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase() ){
+            return -1;
+          }
+          if ( a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ){
+            return 1;
+          }
+          return 0;
         });
       },
       error: (err) => console.error('Hiba a JSON beolvasásakor:', err),
